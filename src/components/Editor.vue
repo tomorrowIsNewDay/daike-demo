@@ -9,7 +9,7 @@
       @click-right="saveInfo"
     />
     <van-cell-group>
-      <van-field v-for='(item,index) in form' :key='index' v-bind="item.value" :label='item.label' placeholder="请输入信息" />
+      <van-field v-for='(item,index) in form' :key='index' v-model="item.value" :label='item.label' placeholder="请输入信息" />
     </van-cell-group>
   </div>
 </template>
