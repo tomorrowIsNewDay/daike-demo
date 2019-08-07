@@ -86,7 +86,7 @@ export default {
             this.$toast(responese.msg)
             store.mutations.setUser(responese.data)
             
-            this.$router.push('./home')
+            this.$router.push({path: '/home/my'})
           }else {
             this.$toast(responese.msg)
           }
