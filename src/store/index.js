@@ -8,6 +8,7 @@ import Vue from 'vue'
 
  const mutations = {
     setUser(user) {
+        window.localStorage.setItem('user', JSON.stringify(user))
         state.user = user
     }
 }
