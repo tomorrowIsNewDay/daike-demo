@@ -9,90 +9,86 @@
       @click-right="saveInfo"
     />
     <van-cell-group>
-      <van-field v-for='(item,index) in form' :key='index' v-model="item.value" :label='item.label' placeholder="请输入信息" />
+      <van-field v-model="editInfo.userName" label="姓名" placeholder="请输入信息" />
+      <van-field v-model="editInfo.email" label="邮箱" placeholder="请输入信息" />
+      <van-field v-model="editInfo.phone" label="电话" placeholder="请输入信息" />
+      <van-field v-model="editInfo.studentId" label="学号" placeholder="请输入信息" />
+      <van-field v-model="editInfo.school" label="学校" placeholder="请输入信息" @focus="showSchoolList" />
+      <van-field v-model="editInfo.major" label="专业" placeholder="请输入信息" />
+      <van-field v-model="editInfo.college" label="学院" placeholder="请输入信息" />
+      <van-field v-model="editInfo.wechat" label="微信" placeholder="请输入信息" />
+      <van-field v-model="editInfo.qq" label="QQ" placeholder="请输入信息" />
     </van-cell-group>
+    <van-action-sheet v-model="isShowSchoolList" title="选择学校">
+      <van-search
+        v-model="searchVal"
+        placeholder="请输入搜索关键词"
+        show-action
+        shape="round"
+        @search="onSearch"
+      >
+        <div slot="action" @click="onSearch">搜索</div>
+      </van-search>
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-cell v-for="item in list" :key="item" :title="item" />
+      </van-list>
+    </van-action-sheet>
   </div>
 </template>
 
 <script>
+import store from "@/store/index";
 export default {
   name: "Editor",
-  props: {
-
-  },
+  props: {},
   data() {
     return {
-      form: {
-        // userId: {
-        //   label: '用户名',
-        //   value: ''
-        // },
-        // account: {
-        //   label: '用户名',
-        //   value: ''
-        // },
-        userName: {
-          label: '姓名',
-          value: ''
-        },
-        email: {
-          label: '邮箱',
-          value: ''
-        },
-        phone: {
-          label: '电话',
-          value: ''
-        },
-        // headerImg: {
-        //   label: '',
-        //   value: ''
-        // },
-        studentId: {
-          label: '学号',
-          value: ''
-        },
-        school: {
-          label: '学校',
-          value: ''
-        },
-        // schoolId: {
-        //   label: '学院',
-        //   value: ''
-        // },
-        // provinceId: {
-        //   label: '专业',
-        //   value: ''
-        // },
-        major: {
-          label: '专业',
-          value: ''
-        },
-        college: {
-          label: '学院',
-          value: ''
-        },
-        wechat: {
-          label: '微信',
-          value: ''
-        },
-        qq: {
-          label: 'QQ',
-          value: ''
-        }
-      }
+      editInfo: {},
+      isShowSchoolList: false,
+      loading: false,
+      finished: false,
+      list: [2,3,4,5],
+      searchVal: '',
     };
+  },
+  mounted() {
+    const userInfo = (this.editInfo = { ...store.state.user });
   },
   created() {},
   methods: {
     handleback() {
       this.$emit("back", false);
     },
-    saveInfo() {}
+    saveInfo() {
+      const user = JSON.parse(window.localStorage.getItem("user"));
+
+      if (!this.editInfo.userId) {
+        this.$toast("请先登录");
+        return;
+      }
+      const postData = { ...user, ...this.editInfo };
+
+      this.$http("post", "/api/user/update", postData, {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }).then(res => {
+        store.mutations.setUser(postData);
+        this.$toast(JSON.parse(res.data).msg);
+      });
+    },
+    showSchoolList() {
+      this.isShowSchoolList = true;
+    },
+    onLoad() {
+      // 加载学校列表
+    },
+    onSearch(){
+
+    }
+
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>
