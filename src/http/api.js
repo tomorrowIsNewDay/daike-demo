@@ -26,7 +26,12 @@ api.interceptors.request.use(config=>{
     config.headers['my-token'] = 'sfjoasjdfoijsdfiojsiodfjio'
 
     if( config.method === 'get' || config.method === 'GET' ) {
-        config.url = config.url + '?' + config.data + '&_t=' + new Date().getTime()
+        if (config.data) {
+            if(typeof config.data !== 'string') {
+                config.data = qs.stringify(config.data)
+            }
+            config.url = config.url + '?' + config.data + '&_t=' + new Date().getTime()
+        }
     }
 
     if( config.method.toLocaleLowerCase() === 'post' ||

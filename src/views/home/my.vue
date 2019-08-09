@@ -43,6 +43,9 @@ export default {
     };
   },
   created() {},
+  mounted(){
+
+  },
   components: {
     Editor
   },

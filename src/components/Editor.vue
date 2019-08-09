@@ -13,7 +13,7 @@
       <van-field v-model="editInfo.email" label="邮箱" placeholder="请输入信息" />
       <van-field v-model="editInfo.phone" label="电话" placeholder="请输入信息" />
       <van-field v-model="editInfo.studentId" label="学号" placeholder="请输入信息" />
-      <van-field v-model="editInfo.school" label="学校" placeholder="请输入信息" @focus="showSchoolList" />
+      <van-field v-model="editInfo.school.name" label="学校" placeholder="请输入信息" @focus="showSchoolList" />
       <van-field v-model="editInfo.major" label="专业" placeholder="请输入信息" />
       <van-field v-model="editInfo.college" label="学院" placeholder="请输入信息" />
       <van-field v-model="editInfo.wechat" label="微信" placeholder="请输入信息" />
@@ -25,12 +25,12 @@
         placeholder="请输入搜索关键词"
         show-action
         shape="round"
-        @search="onSearch"
+        @search="onLoad"
       >
-        <div slot="action" @click="onSearch">搜索</div>
+        <div slot="action" @click="onLoad">搜索</div>
       </van-search>
-      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <van-cell v-for="item in list" :key="item" :title="item" />
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" style='maxHeight:50vh'>
+        <van-cell v-for="item in list" :key="item.id" :title="item.name" @click="handleSelectSchool(item)" :class="[editInfo.school.name === item.name ?'selected': '']"/>
       </van-list>
     </van-action-sheet>
   </div>
@@ -47,7 +47,7 @@ export default {
       isShowSchoolList: false,
       loading: false,
       finished: false,
-      list: [2,3,4,5],
+      list: [],
       searchVal: '',
     };
   },
@@ -64,6 +64,7 @@ export default {
 
       if (!this.editInfo.userId) {
         this.$toast("请先登录");
+        this.$router.push('/')
         return;
       }
       const postData = { ...user, ...this.editInfo };
@@ -77,13 +78,21 @@ export default {
     },
     showSchoolList() {
       this.isShowSchoolList = true;
+      this.searchVal = ''
+      this.onLoad()
     },
-    onLoad() {
-      // 加载学校列表
+    onLoad(){
+      const data = {schoolName: this.searchVal}
+      this.$http('get', `/api/school`, data).then(res=>{
+          this.list = JSON.parse(res.data).data
+          this.loading = false
+          this.finished = true
+        })
     },
-    onSearch(){
-
-    }
+    handleSelectSchool(e){
+      this.editInfo.school = e
+      this.$forceUpdate()
+    },
 
   }
 };
@@ -91,4 +100,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .selected{
+    color:aqua
+  }
 </style>
