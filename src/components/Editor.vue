@@ -37,13 +37,12 @@
 </template>
 
 <script>
-import store from "@/store/index";
+
 export default {
   name: "Editor",
   props: {},
   data() {
     return {
-      editInfo: {},
       isShowSchoolList: false,
       loading: false,
       finished: false,
@@ -51,8 +50,15 @@ export default {
       searchVal: '',
     };
   },
+  computed: {
+    editInfo: {
+      get(){
+         return this.$store.getters['user/user']
+      }
+    }
+  },
   mounted() {
-    const userInfo = (this.editInfo = { ...store.state.user });
+    // const userInfo = (this.editInfo = { ...store.state.user });
   },
   created() {},
   methods: {
@@ -72,7 +78,7 @@ export default {
       this.$http("post", "/api/user/update", postData, {
         "Content-Type": "application/x-www-form-urlencoded"
       }).then(res => {
-        store.mutations.setUser(postData);
+         this.$store.commit('user/setUser', postData )
         this.$toast(JSON.parse(res.data).msg);
       });
     },
@@ -90,7 +96,6 @@ export default {
         })
     },
     handleSelectSchool(e){
-      console.log(e)
       this.editInfo.school = e.name
       this.$forceUpdate()
     },

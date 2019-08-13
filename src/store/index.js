@@ -1,19 +1,17 @@
 /**
  * @author leeming
- * @description demo 使用 observable
+ * @description demo 使用 vuex
  */
 import Vue from 'vue'
+import Vuex from 'vuex'
 
- const state = Vue.observable( {user: {}} )
+import user from './modules/user'
 
- const mutations = {
-    setUser(user) {
-        window.localStorage.setItem('user', JSON.stringify(user))
-        state.user = user
-    }
-}
+Vue.use(Vuex)
 
-export default {
-    state,
-    mutations
-}
+export default  new Vuex.Store({
+    modules: {
+        user,
+    },
+    strict: process.env.NODE_ENV !== 'production'
+})

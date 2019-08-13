@@ -3,6 +3,7 @@ import App from './App.vue'
 // import { http } from './api/http'
 import http from './http/index'
 import router from './router'
+import store from './store'
 import Vant from 'vant'
 
 import 'vant/lib/index.css'
@@ -20,6 +21,7 @@ Vue.use(http)
 
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')
 

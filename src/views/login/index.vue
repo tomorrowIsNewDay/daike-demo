@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import store from '@/store/index'
 export default {
   name: "Login",
   props: {
@@ -84,7 +83,8 @@ export default {
           const responese = JSON.parse(res.data)
           if(responese.code == 1){
             this.$toast(responese.msg)
-            store.mutations.setUser(responese.data)
+            // this.setUser(responese.data)
+            this.$store.commit('user/setUser', responese.data )
             
             this.$router.push({path: '/home/my'})
           }else {
