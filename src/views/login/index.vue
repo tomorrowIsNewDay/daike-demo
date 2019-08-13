@@ -102,6 +102,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.login{
+  padding-top: 50px;
+  text-align: center
+}
 .box {
   padding: 0 20px;
   margin: 20px 

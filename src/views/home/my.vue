@@ -14,7 +14,7 @@
         <van-button type="primary" @click="showEditorPage(true)">编辑个人信息</van-button>
       </van-col>
     </van-row>
-    <van-row v-for='(k,v) in userStrMap' :key='k' type='flex'>
+    <van-row v-for='(k,v) in userStrMap' :key='k' type='flex' style='lineHeight: 32px'>
       <van-col span="5" offset='1'>
         {{k}}
       </van-col>
@@ -85,6 +85,9 @@ export default {
 .my-infos>p{
   flex-basis: 100%
 } */
+.my{
+  padding: 20px
+}
 .popup-overlay {
   width: 100%;
   height: 100%;
