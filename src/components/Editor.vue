@@ -13,7 +13,7 @@
       <van-field v-model="editInfo.email" label="邮箱" placeholder="请输入信息" />
       <van-field v-model="editInfo.phone" label="电话" placeholder="请输入信息" />
       <van-field v-model="editInfo.studentId" label="学号" placeholder="请输入信息" />
-      <van-field v-model="editInfo.school.name" label="学校" placeholder="请输入信息" @focus="showSchoolList" />
+      <van-field v-model="editInfo.school" label="学校" placeholder="请输入信息" @focus="showSchoolList" />
       <van-field v-model="editInfo.major" label="专业" placeholder="请输入信息" />
       <van-field v-model="editInfo.college" label="学院" placeholder="请输入信息" />
       <van-field v-model="editInfo.wechat" label="微信" placeholder="请输入信息" />
@@ -30,7 +30,7 @@
         <div slot="action" @click="onLoad">搜索</div>
       </van-search>
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" style='maxHeight:50vh'>
-        <van-cell v-for="item in list" :key="item.id" :title="item.name" @click="handleSelectSchool(item)" :class="[editInfo.school.name === item.name ?'selected': '']"/>
+        <van-cell v-for="item in list" :key="item.id" :title="item.name" @click="handleSelectSchool(item)" :class="[editInfo.school === item.name ?'selected': '']"/>
       </van-list>
     </van-action-sheet>
   </div>
@@ -90,7 +90,8 @@ export default {
         })
     },
     handleSelectSchool(e){
-      this.editInfo.school = e
+      console.log(e)
+      this.editInfo.school = e.name
       this.$forceUpdate()
     },
 
