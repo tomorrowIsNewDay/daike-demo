@@ -11,6 +11,11 @@ const install = Vue=>{
 
     install.installed = true
 
+    // 加在全局上，为了在store中使用
+    window._http = function(method,url,data,headers){
+        return api({method, url, data, headers})
+    }
+
     Object.defineProperty(Vue.prototype, '$http', {
         enumerable: true,
         configurable: true,

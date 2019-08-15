@@ -50,6 +50,9 @@ api.interceptors.request.use(config=>{
 
 api.interceptors.response.use(response=>{
     // 根据response.data.code 来做不同的处理
+    if(response.data.code !== 1){
+        console.log('interface failed')
+    }
     return response
 }, err => {
     // 处理错误情况
