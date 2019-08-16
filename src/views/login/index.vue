@@ -85,7 +85,9 @@ export default {
             this.$toast(responese.msg)
             // this.setUser(responese.data)
             this.$store.commit('user/setUser', responese.data )
-            
+            // 本地存储token
+            window.localStorage.setItem('my_token', responese.my_token)
+
             this.$router.push({path: '/home/my'})
           }else {
             this.$toast(responese.msg)

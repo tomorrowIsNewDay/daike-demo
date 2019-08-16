@@ -23,8 +23,9 @@ api.interceptors.request.use(config=>{
     if(!config.headers['Content-Type']) {
         config.headers['Content-Type'] = baseconfig.headers
     }
-    config.headers['my-token'] = 'sfjoasjdfoijsdfiojsiodfjio'
-
+    if(config.url !== '/login') {
+        config.headers['my_token'] = window.localStorage.getItem('my_token')
+    }
     if( config.method === 'get' || config.method === 'GET' ) {
         if (config.data) {
             if(typeof config.data !== 'string') {
